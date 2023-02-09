@@ -142,6 +142,29 @@ func templates(api *confluence.API) (*template.Template, error) {
 			`</ac:structured-macro>`,
 		),
 
+		`ac:isms:pageproperties`: text(
+			`<ac:structured-macro ac:name="details">`,
+			`<ac:parameter ac:name="hidden">{{ or .Hidden false }}</ac:parameter>`,
+			`<ac:rich-text-body>`,
+			`<table>`,
+			`<tbody>`,
+			`<tr><th>Title</th><td><ac:structured-macro ac:name="qc-property-macro-dynamic"><ac:parameter ac:name="property">Title</ac:parameter></ac:structured-macro></td></tr>`,
+			`<tr><th>Version</th><td><ac:structured-macro ac:name="qc-property-macro-dynamic"><ac:parameter ac:name="property">Version</ac:parameter></ac:structured-macro></td></tr>`,
+			`<tr><th>Next Audit</th><td><ac:structured-macro ac:name="qc-expiration-date-macro"><ac:parameter ac:name="qc-expiration-message">OVERDUE</ac:parameter><ac:parameter ac:name="qc-expiry-warning-days">30</ac:parameter><ac:parameter ac:name="qc-expiration-date">{{ .ExpirationDate }}</ac:parameter></ac:structured-macro></td></tr>`,
+			`<tr><th>Change Hash</th><td>{{ .Hash }}</td></tr>`,
+			`<tr><th>Owner</th><td><ac:structured-macro ac:name="qc-property-macro-dynamic"><ac:parameter ac:name="property">Created by</ac:parameter></ac:structured-macro></td></tr>`,
+			`{{ if eq .Status "GOOD" }}<tr><th>Status</th><td><ac:structured-macro ac:name="status"><ac:parameter ac:name="title">GOOD</ac:parameter><ac:parameter ac:name="colour">Green</ac:parameter></ac:structured-macro></td></tr>{{ end }}`,
+			`{{ if eq .Status "SCHEDULED" }}<tr><th>Status</th><td><ac:structured-macro ac:name="status"><ac:parameter ac:name="title">SCHEDULED</ac:parameter><ac:parameter ac:name="colour">Yellow</ac:parameter></ac:structured-macro></td></tr>{{ end }}`,
+			`{{ if eq .Status "PENDING" }}<tr><th>Status</th><td><ac:structured-macro ac:name="status"><ac:parameter ac:name="title">PENDING</ac:parameter><ac:parameter ac:name="colour">Blue</ac:parameter></ac:structured-macro></td></tr>{{ end }}`,
+			`{{ if eq .Status "RISK" }}<tr><th>Status</th><td><ac:structured-macro ac:name="status"><ac:parameter ac:name="title">RISK</ac:parameter><ac:parameter ac:name="colour">RED</ac:parameter></ac:structured-macro></td></tr>{{ end }}`,
+			`<tr><th>Restricted</th><td>{{ or .Restricted "NO" }}</td></tr>`,
+			`<tr><th>Comment</th><td>{{ .Comment }}</td></tr>`,
+			`</tbody>`,
+			`</table>`,
+			`</ac:rich-text-body>`,
+			`</ac:structured-macro>`,
+		),
+
 		/* https://confluence.atlassian.com/doc/jira-issues-macro-139380.html */
 		`ac:jiraissues`: text(
 			`<ac:structured-macro ac:name="jiraissues">`,
